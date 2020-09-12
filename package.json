@@ -9,7 +9,8 @@
     "app": "python app.py",
     "dev": "concurrently --names \"CLIENT,SERVER\" -c \"bgBlue.white.bold,bgRed.white.bold\" \"npm run client\" \"npm run app\"",
     "build": "webpack",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build",
+    "production": "npm run build"
   },
   "author": "",
   "license": "ISC",

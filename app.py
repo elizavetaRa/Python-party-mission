@@ -1,0 +1,131 @@
+import os
+import json
+from flask import Flask, request, jsonify, redirect, url_for, render_template, send_file, send_from_directory, Blueprint
+from datastore.schema import Session, User
+
+
+app = Flask(__name__, template_folder='./dist')
+session = Session()
+
+
+# host static files at "/api/static"
+static_folder = Blueprint('static', __name__, static_url_path='/api/static', static_folder='./static')
+app.register_blueprint(static_folder)
+
+
+# host dist at ""
+dist_folder = Blueprint('dist', __name__, static_url_path='', static_folder='./dist')
+app.register_blueprint(dist_folder)
+
+
+# --------------------------------------------------------------------------------
+# CONSTANTS
+# --------------------------------------------------------------------------------
+
+DOWNLOAD_DIRECTORY = "static/images"
+DIST_DIRECTORY = "dist"
+
+# Heroku sets "NODE_ENV" to "production"
+IS_PRODUCTION = os.environ.get('NODE_ENV') == 'production'
+DEBUG = True if not IS_PRODUCTION else False
+PORT = 5000 if not IS_PRODUCTION else os.environ.get('PORT')
+
+# --------------------------------------------------------------------------------
+# FUNCTIONS
+# --------------------------------------------------------------------------------
+
+# --- add in your functions here
+# --- or remove this section and import another file
+
+# --------------------------------------------------------------------------------
+# ROUTES
+# --------------------------------------------------------------------------------
+
+
+class Response():
+  def __init__(self, success=False, data=None, error=None, message=None):
+    self.success = success 
+    self.data = data 
+    self.error = error 
+    self.message = message 
+
+  def to_json(self):
+    return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+
+
+# --- NOTE: webpack config proxy is set up to reroute any "/api/..." requests to this backend.
+# --- It's advised that you prefix any new routes with "/api"
+
+@app.route('/api/createUser', methods=['POST'])
+def create_user():
+  data = request.json
+  response = Response()
+
+  try:
+    row = User(name=data['name'])
+    session.add(row)
+    session.commit()
+    session.refresh(row) # refresh to get the added record
+    response = Response(success=True, data={'id': row.id, 'name': row.name}, message='Successfully created user "{}"'.format(row.name))
+  except Exception as e:
+      response = Response(error=e, message='Failed to create user')
+  finally:
+      session.close()
+
+  return response.to_json()
+
+
+@app.route('/api/fetchUserTasks', methods=['GET'])
+def fetch_user_tasks():
+  response = Response()
+  name = request.args.get('name')
+
+  try:
+    user = session.query(User).filter_by(name=name).first()
+    data = {'id': user.id, 'task1': user.task1, 'task2': user.task2, 'task3': user.task3}
+    response = Response(success=True, data=data, message="Successfully found user tasks")
+  except Exception as e:
+    response = Response(error=e, message='Error fetching all users')
+  finally:
+      session.close()
+
+  return response.to_json()
+
+
+@app.route('/api/fetchAllUsers', methods=['GET'])
+def fetch_all_users():
+  response = Response()
+  
+
+  try:
+    users = session.query(User).all()
+    data = [{'id': row.id, 'name': row.name, 'task1': row.task1, 'task2': row.task2, 'task3': row.task3} for row in users]
+    response = Response(success=True, data=data, message='Successfully fetched all users')
+  except Exception as e:
+      response = Response(error=e, message='Error fetching all users')
+  finally:
+      session.close()
+
+  return response.to_json()
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+  ''' GET
+    - if the route doesn't exist, return index.html
+    - useful if using React Router
+  '''
+
+  IS_PRODUCTION = True
+  if (IS_PRODUCTION):
+    return render_template('index.html')
+  else:
+    return render_template('index.html')
+
+# --------------------------------------------------------------------------------
+# START THE APP
+# --------------------------------------------------------------------------------
+
+if __name__ == '__main__':
+  print('::: {}'.format(PORT))
+  app.run(debug=DEBUG, host='0.0.0.0', port=PORT)

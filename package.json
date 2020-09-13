@@ -10,7 +10,8 @@
     "dev": "concurrently --names \"CLIENT,SERVER\" -c \"bgBlue.white.bold,bgRed.white.bold\" \"npm run client\" \"npm run app\"",
     "build": "webpack",
     "heroku-postbuild": "npm run build",
-    "production": "webpack"
+    "production": "webpack",
+    "heroku-prebuild": "npm install --dev"
   },
   "author": "",
   "license": "ISC",

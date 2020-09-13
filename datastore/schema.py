@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.engine.url import URL
+import os
 
 # HELPFUL CHEAT-SHEET: https://www.pythonsheets.com/notes/python-sqlalchemy.html
 
@@ -11,7 +12,9 @@ from sqlalchemy.engine.url import URL
 # CONSTANTS
 # --------------------------------------------------------------------------------
 
-engine = create_engine(DATABASE_URL)
+
+
+engine = create_engine(os.getenv("DATABASE_URL"))
 Base = declarative_base()
 
 
@@ -50,3 +53,6 @@ except Exception as e:
 finally:
     _session.close()
     """
+
+
+    

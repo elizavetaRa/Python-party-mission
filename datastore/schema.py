@@ -15,6 +15,7 @@ import os
 
 
 engine = create_engine(os.getenv("DATABASE_URL"))
+#engine = create_engine('sqlite:///datastore/test.db')
 Base = declarative_base()
 
 

@@ -86,7 +86,7 @@ const App = () => {
         } */}
 
         <div>
-          {tasks&&<ol>
+          {tasks&&tasks?.task1&&<ol>
             <li>
               <p>{tasks?.task1}</p>
             </li>

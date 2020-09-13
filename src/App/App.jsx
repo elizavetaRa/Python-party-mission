@@ -86,7 +86,7 @@ const App = () => {
         } */}
 
         <div>
-          <ol>
+          {tasks&&<ol>
             <li>
               <p>{tasks?.task1}</p>
             </li>
@@ -96,7 +96,7 @@ const App = () => {
             <li>
               <p>{tasks?.task3}</p>
             </li>
-          </ol>
+          </ol>}
         </div>
       </section>
 

@@ -67,7 +67,7 @@ const App = () => {
         <h3>General</h3>
         <div>
           <ol>
-            <li>Come around 19h :)</li>
+            <li>Come to BeachMitte on Saturday around 19h :)</li>
             <li>We have fields 1&amp;2 from 20:00 to 22:00.</li>
             <li>
               If you want to play, bring water and an extra pair of socks (sand

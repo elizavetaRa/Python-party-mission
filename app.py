@@ -65,7 +65,7 @@ def fetch_user_tasks():
 
   try:
     user = session.query(User).filter_by(name=name).first()
-    data = {'id': user.id, 'task1': user.task1, 'task2': user.task2, 'task3': user.task3}
+    data = {'id': user.id, 'task1': user.task1, 'task2': user.task2, 'task3': user.task3, 'task4': user.task4, 'task5': user.task5 }
     response = Response(success=True, data=data, message="Successfully found user tasks")
   except Exception as e:
     response = Response(error=e, message='Error fetching all users')

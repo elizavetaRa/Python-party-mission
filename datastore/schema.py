@@ -30,6 +30,8 @@ class User(Base):
     task1 = Column(String, nullable=True)
     task2 = Column(String, nullable=True)
     task3 = Column(String, nullable=True)
+    task4 = Column(String, nullable=True)
+    task5 = Column(String, nullable=True)
 
 
 

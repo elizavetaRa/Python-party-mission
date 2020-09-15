@@ -56,23 +56,6 @@ class Response():
 # --- NOTE: webpack config proxy is set up to reroute any "/api/..." requests to this backend.
 # --- It's advised that you prefix any new routes with "/api"
 
-@app.route('/api/createUser', methods=['POST'])
-def create_user():
-  data = request.json
-  response = Response()
-
-  try:
-    row = User(name=data['name'])
-    session.add(row)
-    session.commit()
-    session.refresh(row) # refresh to get the added record
-    response = Response(success=True, data={'id': row.id, 'name': row.name}, message='Successfully created user "{}"'.format(row.name))
-  except Exception as e:
-      response = Response(error=e, message='Failed to create user')
-  finally:
-      session.close()
-
-  return response.to_json()
 
 
 @app.route('/api/fetchUserTasks', methods=['GET'])
@@ -91,22 +74,6 @@ def fetch_user_tasks():
 
   return response.to_json()
 
-
-@app.route('/api/fetchAllUsers', methods=['GET'])
-def fetch_all_users():
-  response = Response()
-  
-
-  try:
-    users = session.query(User).all()
-    data = [{'id': row.id, 'name': row.name, 'task1': row.task1, 'task2': row.task2, 'task3': row.task3} for row in users]
-    response = Response(success=True, data=data, message='Successfully fetched all users')
-  except Exception as e:
-      response = Response(error=e, message='Error fetching all users')
-  finally:
-      session.close()
-
-  return response.to_json()
 
 
 @app.errorhandler(404)

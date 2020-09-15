@@ -2,9 +2,17 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./App.scss";
 
+
+const nonExistenTasks = {
+  task1: "Non exstistent user, you also get some tasks! Tell the barkeeper a funny story.",
+  task2: "Animate people to dance.",
+  task3: "Pick someone’s nose."
+}
+
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const nameRef = useRef(null);
+  const meRef = useRef(null)
 
   const handleGetTasks = () => {
     if (
@@ -18,11 +26,14 @@ const App = () => {
         .then((result) => {
           console.log(result.data.data);
           if (result.data.success) {
-            setTasks(result.data.data);
+            setTasks(result.data.data?result.data.data: nonExistenTasks);
             localStorage.setItem("name", nameRef.current.value);
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {console.log(err)
+          setTasks(nonExistenTasks);
+          localStorage.setItem("name", nameRef.current.value);
+        });
     }
   };
 
@@ -41,23 +52,43 @@ const App = () => {
       })
     }
   }
-
-  useEffect(() => {
-    axios.get('/api/fetchAllUsers')
-    .then(result => {
-      if (result.data.success) {setUsers(result.data.data)
-      console.log(result.data.data)}
-    }).catch(err=>console.log(err))
-  }, [])*/
+*/
 
   return (
     <main>
+      <div className="balloon-container">
+        <div class="balloon"></div>
+      </div>
       <section className="header-section">
-        <h2>Birthday Mission Game</h2>
+        <h3>Birthday Mission Game</h3>
+      </section>
+
+      <section className="description-section">
+        <h3>General</h3>
+        <div>
+          <ol>
+            <li>Come around 19h :)</li>
+            <li>We have fields 1&amp;2 from 20:00 to 22:00.</li>
+            <li>
+              If you want to play, bring water and an extra pair of socks (sand
+              might be cold).
+            </li>
+            <li>Please follow the corona hygiene rules!</li>
+          </ol>
+        </div>
+      </section>
+      <section className="description-section">
+        <h3>Game</h3>
+        <div>
+          <ol>
+            <li>Never mention this game during the party 🤫</li>
+            <li>Complete as many tasks as you can.</li>
+          </ol>
+        </div>
       </section>
 
       <section className="task-section">
-        <h3>Enter your user-code</h3>
+        <h3>Enter Your User-Code:</h3>
 
         <div>
           <input
@@ -69,41 +100,40 @@ const App = () => {
         <br></br>
 
         <button className="glow-on-hover" onClick={handleGetTasks}>
-          Get my Tasks
+          Get my tasks
         </button>
         <br></br>
-        {/**  <div>
-          <input type="text" ref={nameRef}/>
-          <button onClick={handleAdd}>Add</button>
-        </div>
-
-        { users.map( (user, index) => {
-          return <div key={index}>
-            <p>{index}. {user.name}</p>
-          </div>
-        })
-
-        } */}
-
         <div>
-          {tasks&&tasks?.task1&&<ol>
-            <li>
-              <p>{tasks?.task1}</p>
-            </li>
-            <li>
-              <p>{tasks?.task2}</p>
-            </li>
-            <li>
-              <p>{tasks?.task3}</p>
-            </li>
-          </ol>}
+          {tasks && tasks?.task1 && (
+            <ol>
+             { tasks?.task1&&<li>
+               {tasks?.task1}
+              </li>}
+              {tasks?.task2&& <li>
+                {tasks?.task2}
+              </li>}
+             { tasks?.task3&&<li>
+               {tasks?.task3}
+              </li>}
+              { tasks?.task4&&<li>
+                {tasks?.task4}
+              </li>}
+              { tasks?.task4&&<li>
+               {tasks?.task5}
+              </li>}
+            </ol>
+          )}
         </div>
       </section>
 
       <section className="footer-section">
         <div>Made with React + Flask + PostgreSQL by Elizaveta Ragozina</div>
         <br></br>
-        <a href="https://github.com/elizavetaRa/Python-party-mission">
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://github.com/elizavetaRa/Python-party-mission"
+        >
           Follow me on GitHub and give the project a ⭐
         </a>
       </section>

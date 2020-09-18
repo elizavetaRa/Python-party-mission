@@ -24,7 +24,7 @@ const App = () => {
       axios
         .get(encodeURI(`/api/fetchUserTasks?name=${name}`))
         .then((result) => {
-          console.log(result.data.data);
+         
           if (result.data.success) {
             setTasks(result.data.data?result.data.data: nonExistenTasks);
             localStorage.setItem("name", nameRef.current.value);
@@ -57,7 +57,7 @@ const App = () => {
   return (
     <main>
       <div className="balloon-container">
-        <div class="balloon"></div>
+        <div className="balloon"></div>
       </div>
       <section className="header-section">
         <h3>Birthday Mission Game</h3>

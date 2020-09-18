@@ -83,6 +83,7 @@ const App = () => {
           <ol>
             <li>Never mention this game during the party 🤫</li>
             <li>Complete as many tasks as you can.</li>
+            <li>Drop me a message if you are done.</li>
           </ol>
         </div>
       </section>
@@ -134,7 +135,7 @@ const App = () => {
           rel="noopener noreferrer"
           href="https://github.com/elizavetaRa/Python-party-mission"
         >
-          Follow me on GitHub and give the project a ⭐
+          Follow me on GitHub and give the project a ⭐ for further development!
         </a>
       </section>
     </main>

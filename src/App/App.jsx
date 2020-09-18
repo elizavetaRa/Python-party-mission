@@ -83,7 +83,7 @@ const App = () => {
           <ol>
             <li>Never mention this game during the party 🤫</li>
             <li>Complete as many tasks as you can.</li>
-            <li>Drop me a message if you are done.</li>
+            <li>Drop me a message if you are done. Who will be Germany's Next Partystar?</li>
           </ol>
         </div>
       </section>
